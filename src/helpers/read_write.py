@@ -39,3 +39,31 @@ def read_file(file_path: str) -> str:
     except Exception as e:
         print(f"Error reading file {file_path}: {e}")
         return ""
+
+
+def write_file(file_path: str, content: str) -> bool:
+    """
+    Write content to a file
+
+    Args:
+        file_path: Path to the file (absolute path)
+        content: Content to write to the file
+
+    Returns:
+        True if the file was written successfully, False otherwise
+    """
+    if not file_path:
+        print("Error: No file path provided")
+        return False
+
+    try:
+        # Create directory if it doesn't exist
+        path = Path(file_path)
+        path.parent.mkdir(parents=True, exist_ok=True)
+
+        # Write content to file
+        path.write_text(content, encoding="utf-8")
+        return True
+    except Exception as e:
+        print(f"Error writing to file {file_path}: {e}")
+        return False

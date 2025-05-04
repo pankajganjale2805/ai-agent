@@ -13,6 +13,7 @@ OUTPUT RULES:
 4. Start with the first line of code (imports) and end with the last line
 5. Ensure complete, functional code that can be directly used in a Next.js project"""
 
+
 def _get_user_controller_prompt(source_code: str) -> str:
     """
     Generate user prompt for the AI
@@ -26,7 +27,7 @@ def _get_user_controller_prompt(source_code: str) -> str:
 Detailed Conversion Requirements:
 1. Convert the Angular controller to a modern Next.js API route handler using App Router conventions
 2. Create proper TypeScript interfaces for request/response types
-3. Implement RESTful API patterns (GET, POST, PUT, DELETE) as appropriate handlers
+3. Implement RESTful API patterns (GET, POST, PUT, DELETE) as appropriate handlers using axios
 4. Add comprehensive error handling with try/catch blocks and appropriate status codes (400, 401, 403, 404, 500)
 5. Use TypeScript for type safety throughout the handler
 6. For data validation, use Zod or similar validation approach
@@ -43,6 +44,7 @@ File Organization:
 
 OUTPUT FORMAT: Respond ONLY with the converted code without any explanations or comments.
 """
+
 
 def _get_user_service_prompt(source_code: str) -> str:
     """
@@ -75,6 +77,7 @@ File Organization:
 OUTPUT FORMAT: Respond ONLY with the converted code without any explanations or comments.
 """
 
+
 def _get_api_service_prompt(service_name: str, service_code: str) -> str:
     """
     Generate user prompt for the AI
@@ -106,7 +109,10 @@ File Organization:
 OUTPUT FORMAT: Respond ONLY with the converted code without any explanations or comments.
 """
 
-def _get_generate_page_for_route_prompt(controller_code: str, template_code: str, component_name: str) -> str:
+
+def _get_generate_page_for_route_prompt(
+    controller_code: str, template_code: str, component_name: str
+) -> str:
     """
     Generate user prompt for the AI
     """
@@ -125,33 +131,20 @@ Template code:
 The component should be named {component_name} and should be a fully functional React component.
 
 **Empty File Handling:**
-
 *   If the **Legacy Angular File Content** is empty (contains no code or only whitespace), you **MUST** return an empty string. Do not generate any code or comments.
 
 **File Type Handling:**
-
 *   You will determine the file type of the **Legacy Angular File Content** before attempting any conversion (unless the file is empty).
 *   If the file analyzed contains CSS or SCSS, proceed to the CSS Conversion instructions outlined below.
 
 **CSS Conversion Instructions:**
-
-1.  **Tailwind CSS Priority:** Convert existing CSS/SCSS styles to Tailwind classes wherever possible. This is your *primary* styling strategy.
-2.  **CSS Modules (Limited Use):** Use component-specific CSS Modules (.module.css) only when a direct Tailwind conversion is exceptionally difficult (e.g., complex animations, highly dynamic styles, or complex selectors). Avoid overusing CSS Modules.
-3.  **CSS Modules Output:** If you determine that CSS Modules are necessary, output the CSS rules within a `.module.css` file.
-4.  **Tailwind Configuration Awareness:** Be aware that Tailwind configuration might need adjustments to support specific style requirements from the original Angular code (e.g., custom colors, fonts, breakpoints). You cannot adjust the config file, but add a comment if there are potential config additions needed.
-5.  **Preserve Specificity:** IF a CSS property is marked with !important in the angular content, preserve that specificity either through Tailwind's `!important:` modifier or using CSS Modules.
-6.  **No TypeScript for CSS:** Do *not* attempt to represent CSS files as TypeScript components or `.tsx` files. CSS files will simply contain CSS code.
-7.  Do not include any comments or other text in the converted file.
+1.  **Same Class and Id Names:** Use the same class and id names as in the original Angular code.
+2.  **Inline CSS:** Use same inline CSS as in the original Angular code (if any).
 
 **Other File Types** follow the original instructions:
 
-**Important Context:** The provided `index.html` file customizes the base HTML structure of the Angular application. You will create the Next.js equivalent _document.tsx file. *Only* include code that is necessary to customize the base HTML structure (e.g., meta tags, specific font declarations). Do not include any code that represents the *dynamic content* of the page (that will be handled by separate components).
-
 **Conversion Requirements:**
-
-1.  Create a `_document.tsx` file that replicates the customizations in the Angular `index.html`.
-2.  Ensure that you include the necessary `<Html>`, `<Head>`, `<Main>`, and `<NextScript>` components.
-3.  **Angular to Next.js/React Conversion:**
+1.  **Angular to Next.js/React Conversion:**
     *   Angular Components => React Components (Server or Client, as appropriate. Base your decision on the file content; for example, if the file imports `useState` or other React Hooks, it will be a client component.
     *   Angular Services => Utility functions, React Hooks, or API routes (depending on purpose). Explain your choice in a comment if the purpose isn't clear.
     *   Angular Modules => Replaced by React's component composition.
@@ -174,6 +167,7 @@ The component should be named {component_name} and should be a fully functional 
     ```
     <Full content of the converted Next.js file without any comments or other text>
     ```
+13. Under no circumstances should it include Vanilla JavaScript, jQuery, or Angular code as well as any other dependencies. This is crucial for maintainability, future updates, and to prevent conflicts within the overall React application. Use equivalent React code or library instead.
 
 Convert the provided Angular code now.
 
